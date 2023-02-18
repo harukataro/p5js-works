@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Random Polygon with Moving Circles (Slow Version)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+</head>
+
+<body>
+    <script>
+        // 変数の定義
+        let numSides, centerX, centerY, radius, angle;
+        let circles = [];
+        let circleSize = 10, circleSpeed = 1;
+        let canvasWidth = 600, canvasHeight = 600;
+
+        // 初期化
+        function setup() {
+            createCanvas(canvasWidth, canvasHeight);
+            background(255);
+            noStroke();
+        }
+
+        // 描画
+        function draw() {
+            // 多角形のパラメータをランダムに決定
+            numSides = floor(random(3, 13));
+            centerX = random(50, canvasWidth - 50);
+            centerY = random(50, canvasHeight - 50);
+            radius = random(50, 200);
+
+            // 多角形を描画
+            fill(random(255), random(255), random(255), 100);
+            beginShape();
+            for (let i = 0; i < numSides; i++) {
+                angle = i * TWO_PI / numSides;
+                vertex(centerX + radius * cos(angle), centerY + radius * sin(angle));
+            }
+            endShape(CLOSE);
+
+            // 円を生成して追加する
+            circles.push({ x: random(centerX - radius, centerX + radius), y: random(centerY - radius, centerY + radius) });
+            if (circles.length > 100) {
+                circles.shift();
+            }
+
+            // 円を描画して動かす
+            for (let i = 0; i < circles.length; i++) {
+                let circle = circles[i];
+                fill(random(255), random(255), random(255), 200);
+                ellipse(circle.x, circle.y, circleSize, circleSize);
+                circle.x += random(-circleSpeed, circleSpeed);
+                circle.y += random(-circleSpeed, circleSpeed);
+            }
+
+            // キャンバスの外に出た円を削除する
+            for (let i = circles.length - 1; i >= 0; i--) {
+                let circle = circles[i];
+                if (circle.x < -circleSize || circle.x > canvasWidth + circleSize || circle.y < -circleSize || circle.y > canvasHeight + circleSize) {
+                    circles.splice(i, 1);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
