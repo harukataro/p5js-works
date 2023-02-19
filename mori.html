@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>森の風景</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+</head>
+
+<body>
+    <script>
+        let smallTrees = [];
+        let bigTrees = [];
+
+        function setup() {
+            createCanvas(500, 500);
+            noLoop();
+
+            // 小さめの薄い緑色の木を10個ランダムに配置
+            for (let i = 0; i < 10; i++) {
+                let x = random(width);
+                let y = random(height);
+                let size = random(25, 40);
+                let treeColor = color('#A2D9CE');
+
+                smallTrees.push({ x, y, size, treeColor });
+            }
+
+            // 大きめの濃い緑色の木を5個ランダムに配置
+            for (let i = 0; i < 20; i++) {
+                let x = random(width);
+                let y = random(height);
+                let size = random(50, 75);
+                let treeColor = color('#117A65');
+
+                bigTrees.push({ x, y, size, treeColor });
+            }
+        }
+
+        function draw() {
+            // 背景色を設定
+            background('#b7e4c7');
+
+            // 小さめの薄い緑色の木の描画
+            for (let tree of smallTrees) {
+                push();
+                translate(tree.x, tree.y);
+                fill(tree.treeColor);
+                noStroke();
+                let size = tree.size;
+                triangle(0, -size * 1.5, -size, 0, size, 0);
+                triangle(0, -size * 1.2, -size * 0.8, 0, size * 0.8, 0);
+                pop();
+            }
+
+            // 大きめの濃い緑色の木の描画
+            for (let tree of bigTrees) {
+                push();
+                translate(tree.x, tree.y);
+                fill(tree.treeColor);
+                noStroke();
+                let size = tree.size;
+                triangle(0, -size * 2.5, -size, 0, size, 0);
+                triangle(0, -size * 2, -size * 0.8, 0, size * 0.8, 0);
+                triangle(0, -size * 1.5, -size * 0.6, 0, size * 0.6, 0);
+                triangle(0, -size * 1, -size * 0.4, 0, size * 0.4, 0);
+                pop();
+            }
+
+            // 地面の描画
+            fill('#4B6E4F');
+            rect(0, height * 0.7, width, height * 0.3);
+
+            // 狐の描画
+            let foxSize = 70;
+            let foxX = width / 2;
+            let foxY = height * 0.6;
+            let foxColor = color('#D35400');
+
+            push();
+            translate(foxX, foxY);
+            fill(foxColor);
+            noStroke();
+
+            beginShape();
+            vertex(-foxSize / 2, 0);
+            vertex(-foxSize / 2, -foxSize * 0.5);
+            vertex(-foxSize * 0.3, -foxSize * 0.5);
+            vertex(-foxSize * 0.3, -foxSize);
+            vertex(foxSize * 0.3, -foxSize);
+            vertex(foxSize * 0.3, -foxSize * 0.5);
+            vertex(foxSize / 2, -foxSize * 0.5);
+            vertex(foxSize / 2, 0);
+            endShape(CLOSE);
+            ellipse(foxSize * 0.1, -foxSize * 0.7, foxSize * 0.4, foxSize * 0.4);
+            fill('#ffffff');
+            ellipse(foxSize * 0.2, -foxSize * 0.8, foxSize * 0.1, foxSize * 0.1);
+            pop();
+        }
+    </script>
+</body>
+
+</html>
