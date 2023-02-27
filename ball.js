@@ -1,17 +1,15 @@
-//Position of left hand side of floor
-let base1;
+// referenced from: https://p5js.org/examples/motion-non-orthogonal-reflection.html
 
-//Position of right hand side of floor
+let base1;
 let base2;
 
-// Variables related to moving ball
 let positions = [];
 let velocities = [];
 let rs = [];
 let speeds = [];
 
 let numBalls = 1;
-let maxBalls = 100;
+let maxBalls = 500;
 
 function setup() {
   createCanvas(500, 500);
@@ -29,19 +27,19 @@ function setup() {
     velocity.mult(random(2.5, 4.5));
     velocities.push(velocity);
 
-    rs.push(random(5, 10));
-    speeds.push(random(3, 7));
+    rs.push(random(10, 10));
+    speeds.push(random(10, 10));
   }
 }
 
 function draw() {
   //draw background
-  fill(0, 12);
+  fill(10, 12);
   noStroke();
   rect(0, 0, width, height);
 
   //draw base
-  fill("red");
+  fill(20);
   quad(base1.x, base1.y, base2.x, base2.y, base2.x, height, 0, height);
 
   //calculate base top normal
@@ -58,7 +56,7 @@ function draw() {
 
     //draw ellipse
     noStroke();
-    fill(255, i * 10, 0, 200);
+    fill(255, i * 100, 0, 200);
     ellipse(position.x, position.y, r * 2, r * 2);
 
     //move ellipse
@@ -116,8 +114,8 @@ if (position.y < r) {
     velocity.y *= -1;
 
     //randomize base top
-    base1.y = random(height - 100, height);
-    base2.y = random(height - 100, height);
+    base1.y = random(height - 150, height);
+    base2.y = random(height - 150, height);
 
     // split ball into two
     if (numBalls < maxBalls) {

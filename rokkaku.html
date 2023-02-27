@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Random Polygon with Moving Circles (Slow Version)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+</head>
+
+<body>
+  <script>
+
+    let angle = 0; // 回転角度
+    let numColors = 10; // 色の数
+    let colors = []; // 色の配列
+
+    function setup() {
+      createCanvas(500, 500);
+      background(0);
+      strokeWeight(2);
+      noFill();
+
+      // ランダムな色をnumColors個作成して配列に格納
+      for (let i = 0; i < numColors; i++) {
+        colors.push(color(random(255), random(255), random(255)));
+      }
+    }
+
+    function draw() {
+      background(0);
+
+      let radius = width / 6;
+      let angleStep = PI / 10;
+      let centerX = width / 2;
+      let centerY = height / 2;
+
+      // 5回ループして5つの五角形を描画
+      for (let i = 0; i < 15; i++) {
+        let x1 = centerX + radius * cos(angle + angleStep * i);
+        let y1 = centerY + radius * sin(angle + angleStep * i);
+        let x2 = centerX + radius * cos(angle + angleStep * (i + 1));
+        let y2 = centerY + radius * sin(angle + angleStep * (i + 1));
+        let x3 = centerX + radius * cos(angle + angleStep * (i + 2));
+        let y3 = centerY + radius * sin(angle + angleStep * (i + 2));
+
+        // 五角形を描画
+        stroke(colors[i % numColors]); // 配列の色を使って描画
+        triangle(x1, y1, x2, y2, x3, y3);
+
+        // 六角形を描画
+        let hexRadius = radius / cos(angleStep);
+        let hexAngle = PI / 3;
+        let hexX = centerX + hexRadius * cos(angle + angleStep * (i + 0.5));
+        let hexY = centerY + hexRadius * sin(angle + angleStep * (i + 0.5));
+        for (let j = 0; j < 6; j++) {
+          let hexX1 = hexX + hexRadius * cos(hexAngle * j);
+          let hexY1 = hexY + hexRadius * sin(hexAngle * j);
+          let hexX2 = hexX + hexRadius * cos(hexAngle * (j + 1));
+          let hexY2 = hexY + hexRadius * sin(hexAngle * (j + 1));
+          stroke(colors[(i + j) % numColors]); // 配列の色を使って描画
+          line(hexX1, hexY1, hexX2, hexY2);
+        }
+      }
+
+      angle += 0.01; // 回転角度を更新
+    }
+
+
+
+
+  </script>
+</body>
+
+</html>
