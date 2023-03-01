@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Random Polygon with Moving Circles (Slow Version)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+</head>
+
+<body>
+    <script>
+
+        let flowers = [];
+
+        function setup() {
+            createCanvas(400, 400);
+            noStroke();
+            background(255, 192, 203); //ピンク色の背景
+
+            // 中央の円の半径
+            const centerRadius = 80;
+
+            // 花をランダムに配置して描画する
+            for (let i = 0; i < 20; i++) {
+                let overlapping = true;
+                let attempts = 0;
+
+                //花の半径をランダムに設定する
+                const radius = random(10, 20);
+
+                //花の色をランダムに設定する
+                const r = random(255);
+                const g = random(255);
+                const b = random(255);
+                const a = random(50, 200);
+                const color = [r, g, b, a];
+
+                while (overlapping && attempts < 100) {
+                    // 花の中心座標をランダムに設定する
+                    const angle = random(TWO_PI);
+                    const x = width / 2 + cos(angle) * (centerRadius + radius);
+                    const y = height / 2 + sin(angle) * (centerRadius + radius);
+
+                    //新しく配置する花と既に配置された花との距離を計算する
+                    overlapping = false;
+                    for (let j = 0; j < flowers.length; j++) {
+                        const other = flowers[j];
+                        const d = dist(x, y, other.x, other.y);
+                        if (d < radius + other.radius) {
+                            overlapping = true;
+                            break;
+                        }
+                    }
+
+                    if (!overlapping) {
+                        //新しく配置する花を作成する
+                        const flower = { x, y, radius, color };
+                        flowers.push(flower);
+                        //花を描画する
+                        drawFlower(flower);
+                    }
+
+                    attempts++;
+                }
+            }
+
+            //中央の円を描画する
+            fill(255, 215, 00);
+            ellipse(width / 2, height / 2, centerRadius * 2);
+        }
+
+        function drawFlower(flower) {
+            const { x, y, radius, color } = flower;
+            fill(...color);
+            //花びら
+            for (let i = 0; i < 3; i++) {
+                const angle = i * TWO_PI / 3;
+                const px = x + cos(angle) * radius;
+                const py = y + sin(angle) * radius;
+                const a1 = angle - HALF_PI;
+                const a2 = angle + HALF_PI;
+                arc(px, py, radius * 2, radius * 2, a1, a2);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
