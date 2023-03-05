@@ -12,20 +12,17 @@ function setup() {
   count = 1;
   latestPrime = 0;
   points = [];
-  while (count <= 5000) {
+  while (count <= 10000) {
     let xPos = x + radius * cos(angle);
     let yPos = y + radius * sin(angle);
     let isPrime = checkPrime(count);
-    if (isPrime) {
-      latestPrime = count;
-    }
     points.push({x: xPos, y: yPos, isPrime: isPrime});
-    radius += 0.1;
+    radius += 0.05;
     angle += 0.1;
     count++;
   }
   noStroke();
-  frameRate(240);
+  frameRate(1000);
 }
 
 function draw() {
@@ -33,13 +30,9 @@ function draw() {
   let digitPrime;
   for (let i = 0; i < points.length; i++) {
     let point = points[i];
-    let hue = point.isPrime ? 0 : 200;
-    let saturation = 0;
-    let brightness = 100;
     let alpha = 1;
     if (i <= frameCount * 2) {
       if (point.isPrime) {
-        // 素数の場合、光沢感のある色に変更
         digitPrime = i;
         let hue = 0;
         let saturation = 0;
@@ -54,7 +47,6 @@ function draw() {
         rotate(radians(45));
         strokeWeight(1);
         stroke(hue, saturation, brightness, alpha);
-        // noFill();
         rect(-offset, -offset, size, size);
         pop();
     } else if (i % 100 == 0) {
